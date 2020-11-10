@@ -1,0 +1,39 @@
+{
+  "id_map": {},
+  "mod_elements": [
+    {
+      "name": "WelcomeNightmare",
+      "type": "achievement",
+      "sortid": 1,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "welcome_nightmare"
+    }
+  ],
+  "variable_elements": [],
+  "sound_elements": [],
+  "language_map": {
+    "en_us": {
+      "advancements.welcome_nightmare.descr": "You installed the mod",
+      "advancements.welcome_nightmare.title": "Welcome Nightmare"
+    }
+  },
+  "workspaceSettings": {
+    "modid": "cuntpants",
+    "modName": "CuntPants",
+    "version": "1.0.0",
+    "author": "Manta, MCreator",
+    "websiteURL": "https://mcreator.net",
+    "disableForgeVersionCheck": true,
+    "serverSideOnly": false,
+    "requiredMods": [],
+    "dependencies": [],
+    "dependants": [],
+    "mcreatorDependencies": [],
+    "currentGenerator": "forge-1.15.2",
+    "modElementsPackage": "net.mcreator.cuntpants",
+    "lockBaseModFiles": false
+  },
+  "mcreatorVersion": 202000543719
+}
