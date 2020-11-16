@@ -2,7 +2,7 @@
   "_fv": 13,
   "_type": "achievement",
   "definition": {
-    "achievementName": "Welcome Nightmare",
+    "achievementName": "Welcome To The Nightmare",
     "achievementDescription": "You installed the mod",
     "achievementIcon": {
       "value": "Blocks.REDSTONE_BLOCK"
@@ -20,6 +20,6 @@
     "parent": {
       "value": "No parent: root"
     },
-    "triggerxml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"dimension_entered\" x=\"56\" y=\"48\"><field name=\"dimension\">Surface</field><next><block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>"
+    "triggerxml": "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"item_in_inventory\" x=\"10\" y=\"84\"><value name=\"amount_l\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value><value name=\"amount_h\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value><value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\">Blocks.COBBLESTONE</field></block></value><next><block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>"
   }
 }

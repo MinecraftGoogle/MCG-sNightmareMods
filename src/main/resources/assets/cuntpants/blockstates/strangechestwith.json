@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cuntpants:block/strangechestwith"
+    },
+    "facing=east": {
+      "model": "cuntpants:block/strangechestwith",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cuntpants:block/strangechestwith",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cuntpants:block/strangechestwith",
+      "y": 270
+    }
+  }
+}

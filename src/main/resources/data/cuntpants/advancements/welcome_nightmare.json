@@ -17,9 +17,17 @@
   },
   "criteria": {
     "welcome_nightmare": {
-      "trigger": "minecraft:changed_dimension",
+      "trigger": "minecraft:inventory_changed",
       "conditions": {
-        "to": "minecraft:overworld"
+        "items": [
+          {
+            "item": "minecraft:cobblestone",
+            "count": {
+              "min": 1,
+              "max": 1
+            }
+          }
+        ]
       }
     }
   },

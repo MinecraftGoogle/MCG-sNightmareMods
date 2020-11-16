@@ -9,6 +9,24 @@
       "locked_code": false,
       "ids": {},
       "registry_name": "welcome_nightmare"
+    },
+    {
+      "name": "Strangechest",
+      "type": "gui",
+      "sortid": 2,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "strangechest"
+    },
+    {
+      "name": "Strangechestwith",
+      "type": "block",
+      "sortid": 3,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "strangechestwith"
     }
   ],
   "variable_elements": [],
@@ -16,7 +34,8 @@
   "language_map": {
     "en_us": {
       "advancements.welcome_nightmare.descr": "You installed the mod",
-      "advancements.welcome_nightmare.title": "Welcome Nightmare"
+      "block.cuntpants.strangechestwith": "Strangechest",
+      "advancements.welcome_nightmare.title": "Welcome To The Nightmare"
     }
   },
   "workspaceSettings": {
@@ -35,5 +54,5 @@
     "modElementsPackage": "net.mcreator.cuntpants",
     "lockBaseModFiles": false
   },
-  "mcreatorVersion": 202000543719
+  "mcreatorVersion": 202000546519
 }
