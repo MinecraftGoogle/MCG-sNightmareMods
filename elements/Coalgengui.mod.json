@@ -3,13 +3,26 @@
   "_type": "gui",
   "definition": {
     "type": 1,
-    "width": 178,
+    "width": 176,
     "height": 166,
     "inventoryOffsetX": 0,
     "inventoryOffsetY": 0,
     "renderBgLayer": true,
     "doesPauseGame": false,
     "components": [
+      {
+        "type": "label",
+        "data": {
+          "text": "Strange Coal Gen",
+          "color": {
+            "value": -12829636,
+            "falpha": 0.0
+          },
+          "name": "Strange Coal Gen",
+          "x": 132,
+          "y": 44
+        }
+      },
       {
         "type": "inputslot",
         "data": {
@@ -21,20 +34,20 @@
           "dropItemsWhenNotBound": true,
           "name": "Slot #0",
           "x": 204,
-          "y": 80
+          "y": 71
         }
       },
       {
         "type": "label",
         "data": {
-          "text": "Strange Filter Helper",
+          "text": "Energy amount <energy>",
           "color": {
-            "value": -12829636,
+            "value": -65536,
             "falpha": 0.0
           },
-          "name": "Strange Filter Helper",
-          "x": 132,
-          "y": 44
+          "name": "Energy amount <energy>",
+          "x": 159,
+          "y": 98
         }
       }
     ]

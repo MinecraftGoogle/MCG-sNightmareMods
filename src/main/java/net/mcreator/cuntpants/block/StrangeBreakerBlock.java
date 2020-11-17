@@ -7,16 +7,18 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.fml.network.NetworkHooks;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.energy.EnergyStorage;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ToolType;
 
 import net.minecraft.world.storage.loot.LootContext;
+import net.minecraft.world.server.ServerWorld;
 import net.minecraft.world.World;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.ITextComponent;
@@ -49,34 +51,36 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.client.renderer.RenderTypeLookup;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.SoundType;
-import net.minecraft.block.HorizontalBlock;
+import net.minecraft.block.DirectionalBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Block;
 
+import net.mcreator.cuntpants.procedures.StrangeBreakerUpdateTickProcedure;
 import net.mcreator.cuntpants.itemgroup.NightmareTabItemGroup;
-import net.mcreator.cuntpants.gui.StrangechestGui;
+import net.mcreator.cuntpants.gui.BreakerguiGui;
 import net.mcreator.cuntpants.CuntpantsModElements;
 
 import javax.annotation.Nullable;
 
 import java.util.stream.IntStream;
+import java.util.Random;
+import java.util.Map;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Collections;
 
 import io.netty.buffer.Unpooled;
 
 @CuntpantsModElements.ModElement.Tag
-public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
-	@ObjectHolder("cuntpants:strangechestwith")
+public class StrangeBreakerBlock extends CuntpantsModElements.ModElement {
+	@ObjectHolder("cuntpants:strange_breaker")
 	public static final Block block = null;
-	@ObjectHolder("cuntpants:strangechestwith")
+	@ObjectHolder("cuntpants:strange_breaker")
 	public static final TileEntityType<CustomTileEntity> tileEntityType = null;
-	public StrangechestwithBlock(CuntpantsModElements instance) {
-		super(instance, 3);
+	public StrangeBreakerBlock(CuntpantsModElements instance) {
+		super(instance, 6);
 		FMLJavaModLoadingContext.get().getModEventBus().register(this);
 	}
 
@@ -89,30 +93,20 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 
 	@SubscribeEvent
 	public void registerTileEntity(RegistryEvent.Register<TileEntityType<?>> event) {
-		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("strangechestwith"));
-	}
-
-	@Override
-	@OnlyIn(Dist.CLIENT)
-	public void clientLoad(FMLClientSetupEvent event) {
-		RenderTypeLookup.setRenderLayer(block, RenderType.getCutout());
+		event.getRegistry().register(TileEntityType.Builder.create(CustomTileEntity::new, block).build(null).setRegistryName("strange_breaker"));
 	}
 	public static class CustomBlock extends Block {
-		public static final DirectionProperty FACING = HorizontalBlock.HORIZONTAL_FACING;
+		public static final DirectionProperty FACING = DirectionalBlock.FACING;
 		public CustomBlock() {
-			super(Block.Properties.create(Material.ROCK).sound(SoundType.GROUND).hardnessAndResistance(1f, 10f).lightValue(0).notSolid());
+			super(Block.Properties.create(Material.ROCK).sound(SoundType.STONE).hardnessAndResistance(1f, 10f).lightValue(0).harvestLevel(1)
+					.harvestTool(ToolType.PICKAXE));
 			this.setDefaultState(this.stateContainer.getBaseState().with(FACING, Direction.NORTH));
-			setRegistryName("strangechestwith");
+			setRegistryName("strange_breaker");
 		}
 
 		@Override
-		public boolean isNormalCube(BlockState state, IBlockReader worldIn, BlockPos pos) {
-			return false;
-		}
-
-		@Override
-		public boolean propagatesSkylightDown(BlockState state, IBlockReader reader, BlockPos pos) {
-			return true;
+		public int tickRate(IWorldReader world) {
+			return 1;
 		}
 
 		@Override
@@ -131,7 +125,12 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 		@Override
 		public BlockState getStateForPlacement(BlockItemUseContext context) {
 			;
-			return this.getDefaultState().with(FACING, context.getPlacementHorizontalFacing().getOpposite());
+			return this.getDefaultState().with(FACING, context.getNearestLookingDirection().getOpposite());
+		}
+
+		@Override
+		public boolean canConnectRedstone(BlockState state, IBlockReader world, BlockPos pos, Direction side) {
+			return true;
 		}
 
 		@Override
@@ -140,6 +139,32 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 			if (!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(new ItemStack(this, 1));
+		}
+
+		@Override
+		public void onBlockAdded(BlockState state, World world, BlockPos pos, BlockState oldState, boolean moving) {
+			super.onBlockAdded(state, world, pos, oldState, moving);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
+		}
+
+		@Override
+		public void tick(BlockState state, ServerWorld world, BlockPos pos, Random random) {
+			super.tick(state, world, pos, random);
+			int x = pos.getX();
+			int y = pos.getY();
+			int z = pos.getZ();
+			{
+				Map<String, Object> $_dependencies = new HashMap<>();
+				$_dependencies.put("x", x);
+				$_dependencies.put("y", y);
+				$_dependencies.put("z", z);
+				$_dependencies.put("world", world);
+				StrangeBreakerUpdateTickProcedure.executeProcedure($_dependencies);
+			}
+			world.getPendingBlockTicks().scheduleTick(new BlockPos(x, y, z), this, this.tickRate(world));
 		}
 
 		@Override
@@ -153,12 +178,12 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 				NetworkHooks.openGui((ServerPlayerEntity) entity, new INamedContainerProvider() {
 					@Override
 					public ITextComponent getDisplayName() {
-						return new StringTextComponent("Strangechest");
+						return new StringTextComponent("Strange Breaker");
 					}
 
 					@Override
 					public Container createMenu(int id, PlayerInventory inventory, PlayerEntity player) {
-						return new StrangechestGui.GuiContainerMod(id, inventory,
+						return new BreakerguiGui.GuiContainerMod(id, inventory,
 								new PacketBuffer(Unpooled.buffer()).writeBlockPos(new BlockPos(x, y, z)));
 					}
 				}, new BlockPos(x, y, z));
@@ -217,7 +242,7 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 	}
 
 	public static class CustomTileEntity extends LockableLootTileEntity implements ISidedInventory {
-		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(1, ItemStack.EMPTY);
+		private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(9, ItemStack.EMPTY);
 		protected CustomTileEntity() {
 			super(tileEntityType);
 		}
@@ -229,6 +254,8 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 				this.stacks = NonNullList.withSize(this.getSizeInventory(), ItemStack.EMPTY);
 			}
 			ItemStackHelper.loadAllItems(compound, this.stacks);
+			if (compound.get("energyStorage") != null)
+				CapabilityEnergy.ENERGY.readNBT(energyStorage, null, compound.get("energyStorage"));
 		}
 
 		@Override
@@ -237,6 +264,7 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 			if (!this.checkLootAndWrite(compound)) {
 				ItemStackHelper.saveAllItems(compound, this.stacks);
 			}
+			compound.put("energyStorage", CapabilityEnergy.ENERGY.writeNBT(energyStorage, null));
 			return compound;
 		}
 
@@ -270,22 +298,22 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 
 		@Override
 		public ITextComponent getDefaultName() {
-			return new StringTextComponent("strangechestwith");
+			return new StringTextComponent("strange_breaker");
 		}
 
 		@Override
 		public int getInventoryStackLimit() {
-			return 15;
+			return 64;
 		}
 
 		@Override
 		public Container createMenu(int id, PlayerInventory player) {
-			return new StrangechestGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
+			return new BreakerguiGui.GuiContainerMod(id, player, new PacketBuffer(Unpooled.buffer()).writeBlockPos(this.getPos()));
 		}
 
 		@Override
 		public ITextComponent getDisplayName() {
-			return new StringTextComponent("Strangechest");
+			return new StringTextComponent("Strange Breaker");
 		}
 
 		@Override
@@ -318,10 +346,33 @@ public class StrangechestwithBlock extends CuntpantsModElements.ModElement {
 			return true;
 		}
 		private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+		private final EnergyStorage energyStorage = new EnergyStorage(400000, 200, 200, 0) {
+			@Override
+			public int receiveEnergy(int maxReceive, boolean simulate) {
+				int retval = super.receiveEnergy(maxReceive, simulate);
+				if (!simulate) {
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+				return retval;
+			}
+
+			@Override
+			public int extractEnergy(int maxExtract, boolean simulate) {
+				int retval = super.extractEnergy(maxExtract, simulate);
+				if (!simulate) {
+					markDirty();
+					world.notifyBlockUpdate(pos, world.getBlockState(pos), world.getBlockState(pos), 2);
+				}
+				return retval;
+			}
+		};
 		@Override
 		public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
 			if (!this.removed && facing != null && capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)
 				return handlers[facing.ordinal()].cast();
+			if (!this.removed && capability == CapabilityEnergy.ENERGY)
+				return LazyOptional.of(() -> energyStorage).cast();
 			return super.getCapability(capability, facing);
 		}
 

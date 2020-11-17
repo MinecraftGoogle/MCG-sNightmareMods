@@ -13,6 +13,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 
@@ -38,15 +39,16 @@ import net.mcreator.cuntpants.CuntpantsModElements;
 import net.mcreator.cuntpants.CuntpantsMod;
 
 import java.util.function.Supplier;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.Map;
 import java.util.HashMap;
 
 @CuntpantsModElements.ModElement.Tag
-public class StrangechestGui extends CuntpantsModElements.ModElement {
+public class CoalgenguiGui extends CuntpantsModElements.ModElement {
 	public static HashMap guistate = new HashMap();
 	private static ContainerType<GuiContainerMod> containerType = null;
-	public StrangechestGui(CuntpantsModElements instance) {
-		super(instance, 2);
+	public CoalgenguiGui(CuntpantsModElements instance) {
+		super(instance, 9);
 		elements.addNetworkMessage(ButtonPressedMessage.class, ButtonPressedMessage::buffer, ButtonPressedMessage::new,
 				ButtonPressedMessage::handler);
 		elements.addNetworkMessage(GUISlotChangedMessage.class, GUISlotChangedMessage::buffer, GUISlotChangedMessage::new,
@@ -62,7 +64,7 @@ public class StrangechestGui extends CuntpantsModElements.ModElement {
 
 	@SubscribeEvent
 	public void registerContainer(RegistryEvent.Register<ContainerType<?>> event) {
-		event.getRegistry().register(containerType.setRegistryName("strangechest"));
+		event.getRegistry().register(containerType.setRegistryName("coalgengui"));
 	}
 	public static class GuiContainerModFactory implements IContainerFactory {
 		public GuiContainerMod create(int id, PlayerInventory inv, PacketBuffer extraData) {
@@ -119,15 +121,15 @@ public class StrangechestGui extends CuntpantsModElements.ModElement {
 					}
 				}
 			}
-			this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 80, 44) {
+			this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 79, 35) {
 			}));
 			int si;
 			int sj;
 			for (si = 0; si < 3; ++si)
 				for (sj = 0; sj < 9; ++sj)
-					this.addSlot(new Slot(inv, sj + (si + 1) * 9, 1 + 8 + sj * 18, 0 + 84 + si * 18));
+					this.addSlot(new Slot(inv, sj + (si + 1) * 9, 0 + 8 + sj * 18, 0 + 84 + si * 18));
 			for (si = 0; si < 9; ++si)
-				this.addSlot(new Slot(inv, si, 1 + 8 + si * 18, 0 + 142));
+				this.addSlot(new Slot(inv, si, 0 + 8 + si * 18, 0 + 142));
 		}
 
 		public Map<Integer, Slot> get() {
@@ -294,10 +296,10 @@ public class StrangechestGui extends CuntpantsModElements.ModElement {
 			this.y = container.y;
 			this.z = container.z;
 			this.entity = container.entity;
-			this.xSize = 178;
+			this.xSize = 176;
 			this.ySize = 166;
 		}
-		private static final ResourceLocation texture = new ResourceLocation("cuntpants:textures/strangechest.png");
+		private static final ResourceLocation texture = new ResourceLocation("cuntpants:textures/coalgengui.png");
 		@Override
 		public void render(int mouseX, int mouseY, float partialTicks) {
 			this.renderBackground();
@@ -330,7 +332,16 @@ public class StrangechestGui extends CuntpantsModElements.ModElement {
 
 		@Override
 		protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY) {
-			this.font.drawString("Strange Filter Helper", 7, 7, -12829636);
+			this.font.drawString("Strange Coal Gen", 6, 7, -12829636);
+			this.font.drawString("Energy amount " + (new Object() {
+				public int getEnergyStored(BlockPos pos) {
+					AtomicInteger _retval = new AtomicInteger(0);
+					TileEntity _ent = world.getTileEntity(pos);
+					if (_ent != null)
+						_ent.getCapability(CapabilityEnergy.ENERGY, null).ifPresent(capability -> _retval.set(capability.getEnergyStored()));
+					return _retval.get();
+				}
+			}.getEnergyStored(new BlockPos((int) x, (int) y, (int) z))) + "", 33, 61, -65536);
 		}
 
 		@Override

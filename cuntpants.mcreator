@@ -27,14 +27,130 @@
       "locked_code": false,
       "ids": {},
       "registry_name": "strangechestwith"
+    },
+    {
+      "name": "NightmareTab",
+      "type": "tab",
+      "sortid": 4,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "nightmare_tab"
+    },
+    {
+      "name": "NTIcon",
+      "type": "item",
+      "sortid": 5,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "nt_icon"
+    },
+    {
+      "name": "StrangeBreaker",
+      "type": "block",
+      "sortid": 6,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "strange_breaker"
+    },
+    {
+      "name": "StrangeBreakerUpdateTick",
+      "type": "procedure",
+      "sortid": 7,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "strange_breaker_update_tick",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Breakergui",
+      "type": "gui",
+      "sortid": 8,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "breakergui"
+    },
+    {
+      "name": "Coalgengui",
+      "type": "gui",
+      "sortid": 9,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "coalgengui"
+    },
+    {
+      "name": "CoalgenUpdateTick",
+      "type": "procedure",
+      "sortid": 10,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "coalgen_update_tick",
+      "metadata": {
+        "dependencies": [
+          {
+            "name": "x",
+            "type": "number"
+          },
+          {
+            "name": "y",
+            "type": "number"
+          },
+          {
+            "name": "z",
+            "type": "number"
+          },
+          {
+            "name": "world",
+            "type": "world"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Coalgen",
+      "type": "block",
+      "sortid": 10,
+      "compiles": true,
+      "locked_code": false,
+      "ids": {},
+      "registry_name": "coalgen"
     }
   ],
   "variable_elements": [],
   "sound_elements": [],
   "language_map": {
     "en_us": {
+      "block.cuntpants.strange_breaker": "Strange Breaker",
+      "block.cuntpants.coalgen": "Coalgen",
       "advancements.welcome_nightmare.descr": "You installed the mod",
+      "itemGroup.tabnightmare_tab": "Nightmare Mod Tab",
       "block.cuntpants.strangechestwith": "Strangechest",
+      "item.cuntpants.nt_icon": "NT Icon",
       "advancements.welcome_nightmare.title": "Welcome To The Nightmare"
     }
   },
@@ -49,8 +165,11 @@
     "requiredMods": [],
     "dependencies": [],
     "dependants": [],
-    "mcreatorDependencies": [],
+    "mcreatorDependencies": [
+      "just_enough_items"
+    ],
     "currentGenerator": "forge-1.15.2",
+    "credits": "Created using mod maker MCreator - https://mcreator.net/about",
     "modElementsPackage": "net.mcreator.cuntpants",
     "lockBaseModFiles": false
   },

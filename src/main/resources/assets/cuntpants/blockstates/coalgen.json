@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cuntpants:block/coalgen"
+    },
+    "facing=east": {
+      "model": "cuntpants:block/coalgen",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cuntpants:block/coalgen",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cuntpants:block/coalgen",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "cuntpants:block/coalgen",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "cuntpants:block/coalgen",
+      "x": 90
+    }
+  }
+}

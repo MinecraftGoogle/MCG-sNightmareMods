@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "cuntpants:block/strange_breaker"
+    },
+    "facing=east": {
+      "model": "cuntpants:block/strange_breaker",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "cuntpants:block/strange_breaker",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "cuntpants:block/strange_breaker",
+      "y": 270
+    },
+    "facing=up": {
+      "model": "cuntpants:block/strange_breaker",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "cuntpants:block/strange_breaker",
+      "x": 90
+    }
+  }
+}

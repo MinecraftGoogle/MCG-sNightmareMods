@@ -1,0 +1,41 @@
+{
+  "_fv": 13,
+  "_type": "gui",
+  "definition": {
+    "type": 0,
+    "width": 176,
+    "height": 100,
+    "inventoryOffsetX": 0,
+    "inventoryOffsetY": 0,
+    "renderBgLayer": true,
+    "doesPauseGame": false,
+    "components": [
+      {
+        "type": "label",
+        "data": {
+          "text": "Strange Breaker",
+          "color": {
+            "value": -12829636,
+            "falpha": 0.0
+          },
+          "name": "Strange Breaker",
+          "x": 132,
+          "y": 80
+        }
+      },
+      {
+        "type": "label",
+        "data": {
+          "text": "Energy amount <energy>",
+          "color": {
+            "value": -65536,
+            "falpha": 0.0
+          },
+          "name": "Energy amount <energy>",
+          "x": 177,
+          "y": 107
+        }
+      }
+    ]
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "_fv": 13,
+  "_type": "tab",
+  "definition": {
+    "name": "Nightmare Mod Tab",
+    "icon": {
+      "value": "CUSTOM:NTIcon"
+    },
+    "showSearch": false
+  }
+}
